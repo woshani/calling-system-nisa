@@ -130,76 +130,15 @@ public class MainClass {
         System.out.println(coba);
         System.out.println("C".contains("CCCVC"));
     }
-    
-    
-    //Dictionary based on table above
-    /*private static final Map<String, String> myMap = createMap();
-    private static Map<String, String> createMap()
-    {
-        Map<String,String> myMap = new HashMap<String,String>();
-        myMap.put("p", "b");
-        myMap.put("b", "p");
-        myMap.put("t", "d");
-        myMap.put("d", "t");
-        myMap.put("c", "j");
-        myMap.put("j", "c");
-        myMap.put("k", "g");
-        myMap.put("g", "k");
-        myMap.put("f", "v");
-        myMap.put("v", "f");
-        myMap.put("s", "z");
-        myMap.put("z", "s");
-        myMap.put("sy", "s");
-        myMap.put("kh", "k");
-        myMap.put("ch", "c");
-        myMap.put("gh", "g");
-        myMap.put("y", "i");
-        return myMap;
+    public String changeY(String word){
+        String text = word;
+        int x;
+        StringBuilder theName;
+        ArrayList<Integer> positionY = new ArrayList<>();
+        positionY = Preprocessing.findPositions(word, 'y');
+        
+        return text;
     }
-    
-    //change syllable; 
-    private String changeSyll(String input){
-        String syll, res = input;
-        char lastSyll, lastSyll_1, firstSyll, secondSyll, lastInput;
-        int size;
-        
-        syll = Syllabilizer.getWordPattern(input);
-        size = syll.length();
-        lastSyll = syll.charAt(size-1);
-        lastSyll_1 = syll.charAt(size-2);
-        lastInput = input.charAt(size-1);
-        firstSyll = syll.charAt(0);
-        secondSyll = syll.charAt(1);
-
-        if(myMap.containsKey(Character.toString(lastInput))){     
-            System.out.println("1");
-            //input = zab, output = zap; input = my, output = mi         
-            res = input.substring(0, size-1).concat(myMap.get(Character.toString(lastInput)));
-            if(!isAvailable(res)){  
-            //if 'zap' not available in databse output will become 'za'
-                res = input.substring(0, size-1);
-            }        
-        }
-        //input = zai, ouput za; input = mao, output = ma; input = zee, outpue = ze
-        else if((lastSyll=='V' && lastSyll_1=='V')){
-            System.out.println("2");
-            res = res = input.substring(0, size-1);
-        }
-        //input = khai, ouput = kai
-        else if(firstSyll=='C' && secondSyll=='C'){
-            System.out.println("3");
-            res = input.charAt(0)+input.substring(2);
-        }
-        //input = zam, output = za
-        else{
-            System.out.println("4");
-            res = res = input.substring(0, size-1);
-        }
-        
-        
-        return res;
-        
-    }*/
 
     /**
      * @param args the command line arguments
@@ -221,15 +160,33 @@ public class MainClass {
         //mc.preprocessingTest();
         //mc.wordOnlyProcessorTest();
         //System.out.println(System.getProperty("user.dir"));
-        new GUI().setVisible(true);
-        //System.out.println(Syllabilizer.getWordPattern("sayang"));
-        //String s="zap";
-        //System.out.println(mc.changeSyll(s));
-        //mc.searchInDatabase(s);
         
-        //String text = "A'lix Al-Ghazali S. Kom";
-        //System.out.println(text.replace("\'", "").replace(".", " ").replace("-", " "));
-                
+        new GUI().setVisible(true);
+        
+        /*String syl, sy;
+        StringBuilder t;
+        syl="struk";
+        sy=Syllabilizer.getWordPattern(syl);
+        t = new StringBuilder(syl);
+        if(sy.equals("VCC") || sy.equals("CVV")){   //VCC ASY -> VC AS | CVV BOO -> CV BO
+            t.deleteCharAt(2);
+            System.out.println(t);
+        }
+        else if(sy.equals("CVCC") || sy.equals("CCVC")){    //CVCC HING	-> CVC HIN | CCVC SHIB -> CCV SHI
+            t.deleteCharAt(3);
+            System.out.println(t);
+        }else if(sy.equals("CVVC")){ //CVVC NOOR -> CVC	NOR
+            t.deleteCharAt(2);
+            System.out.println(t);
+        }else if(sy.equals("CCCV")){ //CCCV STRA -> CCV	TRA
+            t.deleteCharAt(0);
+            System.out.println(t);
+        }else if(sy.equals("CCCVC")){ //CCCVC struk -> CVC RUK
+            t.deleteCharAt(0);
+            t.deleteCharAt(1);
+            System.out.println(t);
+        }*/
+       
     }
     
 }

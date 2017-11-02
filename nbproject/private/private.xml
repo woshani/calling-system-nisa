@@ -3,13 +3,10 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/D:/Nurul-Anisa-Sri-Winarsih/TTS/Code/src/texttospeech/Preprocessing.java</file>
-            <file>file:/D:/Nurul-Anisa-Sri-Winarsih/TTS/Code/src/texttospeech/AvailableWordProcessor.java</file>
-            <file>file:/D:/Nurul-Anisa-Sri-Winarsih/TTS/Code/src/texttospeech/MainClass.java</file>
-            <file>file:/D:/Nurul-Anisa-Sri-Winarsih/TTS/Code/src/texttospeech/GUI.java</file>
-            <file>file:/D:/Nurul-Anisa-Sri-Winarsih/TTS/Code/src/texttospeech/Syllabilizer.java</file>
-            <file>file:/D:/Nurul-Anisa-Sri-Winarsih/TTS/Code/src/texttospeech/WordOnlyProcessor.java</file>
-            <file>file:/D:/Nurul-Anisa-Sri-Winarsih/TTS/Code/src/texttospeech/WAVSpeedReducer.java</file>
+            <file>file:/C:/Code/src/texttospeech/Preprocessing.java</file>
+            <file>file:/C:/Code/src/texttospeech/Syllabilizer.java</file>
+            <file>file:/C:/Code/src/texttospeech/MainClass.java</file>
+            <file>file:/C:/Code/src/texttospeech/WordOnlyProcessor.java</file>
         </group>
     </open-files>
 </project-private>

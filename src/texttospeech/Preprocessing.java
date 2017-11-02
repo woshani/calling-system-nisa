@@ -10,7 +10,7 @@ import java.util.Arrays;
 
 /**
  *
- * @author Kadek
+ * @author Kadek & Anisa
  * This is a class for process every token in the text.
  * This is the main class.
  */
@@ -21,9 +21,12 @@ public class Preprocessing {
     private ArrayList<String> words;
     
     public Preprocessing(String originalText) {
+        String tempText;
         this.originalText = originalText;
         // Remove every punctuation.
-        this.normalizedText = originalText.replaceAll("(\\r|\\n|\\n\\r|\\r\\n)", " ").trim().replaceAll("\\s+", " ").replaceAll("\\p{P}", "").replace("\'", "").replace(".", " ").replace("-", " ").toLowerCase();
+        tempText = originalText.replace("\'", "").replace(".", " ").replace("-", " ");
+        this.normalizedText = tempText.replaceAll("(\\r|\\n|\\n\\r|\\r\\n)", " ").trim().replaceAll("\\s+", " ").replaceAll("\\p{P}", "").replaceAll("ee", "i").replaceAll("eo", "u").replaceAll("oo", "u").toLowerCase();
+        
         //System.out.println(normalizedText);
         // Split text based on space.
         words = new ArrayList<String>(Arrays.asList(normalizedText.split(" ")));
@@ -32,10 +35,57 @@ public class Preprocessing {
     }
     
     private void iterator() {
-        // Iterate every token.
+        int x;
+        String syll;
+        int indexY, indexLastText;
+        char lastChar, beforeLastChar, typeBeforeLastChar; //last char in the word, char before last in the word
+        char syllBefore='V', syllAfter='V';
+        StringBuilder theName; //temp 
+        ArrayList<Integer> positionY = new ArrayList<Integer>();
         for (int i = 0; i < words.size(); i++) {
             String word = words.get(i);
-            
+            System.out.println(word);
+            if(word.contains("y")){
+                syll = Syllabilizer.getWordPattern(word);
+                //System.out.println(syll);
+                positionY = findPositions(word, 'y');
+
+
+                for (x = 0; x < positionY.size(); x++) {
+                    //System.out.println(positionY.get(x));
+                    indexLastText = word.length()-1;
+                    indexY = positionY.get(x);
+                    beforeLastChar = word.charAt(indexLastText-1);
+                    typeBeforeLastChar = changeChar(beforeLastChar);
+                    if(indexY==indexLastText && typeBeforeLastChar!='V'){ //ban"dy" become ban"di"
+                        theName = new StringBuilder(word);
+                        theName.setCharAt(indexY, 'i');
+                        word = theName.toString();
+                    }
+                    else{ 
+                        if(indexY>0){
+                            syllBefore = syll.charAt(indexY-1);
+                        }
+                        
+                        if(indexY<indexLastText){
+                            syllAfter = syll.charAt(indexY+1);
+                        }
+                        
+                        System.out.println(syllBefore+" .. "+syllAfter);
+                        if(syllBefore=='C' && syllAfter=='C'){ //emylia become emilia
+                            theName = new StringBuilder(word);
+                            theName.setCharAt(indexY, 'i');
+                            word = theName.toString();
+                        }
+                        else{
+                            System.out.println(word);
+                            word = word;
+                        }
+                    }
+                }
+                
+            }
+                
             // If token is acronym, then replace it to the alias.
             int isAcronym = ConstantObjects.searchAcronyms(ConstantObjects.ACRONYMS, word);
             if (isAcronym > -1) {
@@ -61,5 +111,25 @@ public class Preprocessing {
     
     public String getOutputName() {
         return outputName;
+    }
+    
+    public static ArrayList<Integer> findPositions(String string, char character) {
+        ArrayList<Integer> positions = new ArrayList<Integer>();
+        for (int i = 0; i < string.length(); i++){
+            if (string.charAt(i) == character) {
+               positions.add(i);
+            }
+        }
+        return positions;
+    }
+    public char changeChar(char c){
+        char res='V';
+        if(c=='a' || c=='i' || c=='u' || c=='e' || c=='o'){
+            res = 'V';
+        }
+        else{
+            res = c;
+        }
+        return res;
     }
 }

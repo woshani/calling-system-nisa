@@ -49,13 +49,15 @@ public class ConstantObjects {
                 new ArrayList<String>(Arrays.asList("h")),
                 new ArrayList<String>(Arrays.asList("hj", "hjh")),
                 new ArrayList<String>(Arrays.asList("ir")),
-                new ArrayList<String>(Arrays.asList("m", "md", "moh", "mohd", "muh", "muhd")),
+                new ArrayList<String>(Arrays.asList("m", "moh", "mohd", "muh", "muhd")),
+                new ArrayList<String>(Arrays.asList("md")),
                 new ArrayList<String>(Arrays.asList("prof")),
                 new ArrayList<String>(Arrays.asList("r")),
                 new ArrayList<String>(Arrays.asList("s")),
                 new ArrayList<String>(Arrays.asList("sh")),
                 new ArrayList<String>(Arrays.asList("sy")),
-                new ArrayList<String>(Arrays.asList("w"))
+                new ArrayList<String>(Arrays.asList("w")),
+                new ArrayList<String>(Arrays.asList("@"))
         ));
     public static final ArrayList<String> ALIAS = new ArrayList<String>(Arrays.asList(
                                                     "abdul",
@@ -67,12 +69,14 @@ public class ConstantObjects {
                                                     "hajah",
                                                     "jurutera",
                                                     "muhammad",
+                                                    "mad",
                                                     "professor",
                                                     "raden",
                                                     "syeik",
                                                     "sharifa",
                                                     "syed",
-                                                    "wan"
+                                                    "wan",
+                                                    "alias"
     ));
     
     /**

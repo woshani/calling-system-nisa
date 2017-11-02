@@ -13,7 +13,7 @@ import java.util.logging.Logger;
 
 /**
  *
- * @author Kadek
+ * @author Kadek & Anisa
  * This is a class for handle letter-only token.
  */
 public class WordOnlyProcessor {
@@ -28,8 +28,8 @@ public class WordOnlyProcessor {
     private static final Map<String, String> myMap = createMap();
     private static Map<String, String> createMap()
     {
-        Map<String,String> myMap = new HashMap<String,String>();
-        myMap.put("p", "b");
+        Map<String,String> myMap = new HashMap<String,String>(); //p, t, c, k, s,  
+        /*myMap.put("p", "b");
         myMap.put("b", "p");
         myMap.put("t", "d");
         myMap.put("d", "t");
@@ -37,22 +37,26 @@ public class WordOnlyProcessor {
         myMap.put("j", "c");
         myMap.put("k", "g");
         myMap.put("g", "k");
-        myMap.put("f", "v");
+        myMap.put("f", "v");*/
         myMap.put("v", "f");
-        myMap.put("s", "z");
+        myMap.put("w", "f");
+        //myMap.put("s", "z");
         myMap.put("z", "s");
-        myMap.put("sy", "s");
-        myMap.put("kh", "k");
-        myMap.put("ch", "c");
-        myMap.put("gh", "g");
         myMap.put("y", "i");
+        //myMap.put("sy", "s");
+        //myMap.put("kh", "k");
+        //myMap.put("ch", "c");
+        //myMap.put("gh", "g");
+        myMap.put("y", "i");
+        myMap.put("x", "s");
+        myMap.put("q", "k");
         return myMap;
     }
     
     //change syllable; 
     private String changeSyll(String input){
         String syll, res = input;
-        char lastSyll, lastSyll_1, firstSyll, secondSyll, lastInput;
+        char lastSyll, lastSyll_1, firstSyll, secondSyll, lastInput, firstInput, secondInput;
         int size;
         
         syll = Syllabilizer.getWordPattern(input);
@@ -60,22 +64,56 @@ public class WordOnlyProcessor {
         lastSyll = syll.charAt(size-1);
         lastSyll_1 = syll.charAt(size-2);
         lastInput = input.charAt(size-1);
-        firstSyll = syll.charAt(0);
-        secondSyll = syll.charAt(1);
+        
+        
+        //firstSyll = syll.charAt(0);
+        //secondSyll = syll.charAt(1);
 
         if(myMap.containsKey(Character.toString(lastInput))){     
             System.out.println("1");
-            //input = zab, output = zap; input = my, output = mi         
+            //input = kaw, output = kaf; input = lav, output = laf         
             res = input.substring(0, size-1).concat(myMap.get(Character.toString(lastInput)));
-            if(!isAvailable(res)){  
-            //if 'zap' not available in databse output will become 'za'
-                res = input.substring(0, size-1);
-            }        
+      
         }
+        secondInput = res.charAt(1);
+        if(myMap.containsKey(Character.toString(secondInput))){     
+            System.out.println("1.3");
+            //input = dwi, output = dvi; input = dxa, output = dsa 
+            res = res.charAt(0)+myMap.get(Character.toString(secondInput))+res.charAt(2);
+            //res = input.charAt(0).concat(myMap.get(Character.toString(secondInput)))).concat(input.substring(1, size-1));
+
+        }
+        firstInput = res.charAt(0);
+        if(myMap.containsKey(Character.toString(firstInput))){     
+            System.out.println("1.2");
+            //input = won, output = fon; input = qak, output = kak         
+            res = (myMap.get(Character.toString(firstInput))).concat(res.substring(1, size));
+
+        }
+        //new one
+        firstInput = res.charAt(0);
+        secondInput = res.charAt(1);
+        if(firstInput==secondInput){ //ggo -> go
+            res = res.substring(1);
+        }
+        if(!isAvailable(res)){
+            if(Syllabilizer.getWordPattern(res).equals("CCV")){ //kfi -> fi (example, there is no kfi in database)
+                res = res.substring(1);
+            }
+            else{   //max -> ma (example, there is no max in database)
+                res = res.substring(0,1);
+            }
+        }
+        /*if(!isAvailable(res)){  
+            //if 'fon' not available in databse output will become 'fa'
+                res = removeChar(input, 1);
+            }
+        */
+        /*//if(input.contains(res))
         //input = zai, ouput za; input = mao, output = ma; input = zee, outpue = ze
         else if((lastSyll=='V' && lastSyll_1=='V')){
             System.out.println("2");
-            res = res = input.substring(0, size-1);
+            res = input.substring(0, size-1);
         }
         //input = khai, ouput = kai
         else if(firstSyll=='C' && secondSyll=='C'){
@@ -86,9 +124,9 @@ public class WordOnlyProcessor {
         else{
             System.out.println("4");
             res = res = input.substring(0, size-1);
-        }
+        }*/
         
-        
+        System.out.println(res);
         return res;
         
     }
@@ -119,18 +157,86 @@ public class WordOnlyProcessor {
                 concatList.add(getPath(syl, 0));
             } 
             else { // If not, make a new one.
-                // Phonetize the word.
+                // Phonetize the word. Syllable concatenation
                 ArrayList<String> phonemes = new Phonetizer(syl).getPhonemes();
                 ArrayList<String> overlayList = new ArrayList<String>();
                 ArrayList<String> overlayListPath = new ArrayList<String>();
                 //System.out.println(phonemes);
-                String s=syl;
+                String sy;
+                StringBuilder t;
+                sy=Syllabilizer.getWordPattern(syl);
+                t = new StringBuilder(syl);
+                if(sy.equals("VCC") || sy.equals("CVV") || sy.equals("CVV")){   //VCC ASY -> VC AS | CVV BOO -> CV BO, ZAI -> ZA 
+                    t.deleteCharAt(2);
+                    //System.out.println(t);
+                }else if(sy.equals("CCVV")){    //CCVV  KHAI 
+                    t.deleteCharAt(1);          
+                    if(isAvailable(t.toString())){  //KAI
+                        String s=t.toString();
+                    }
+                    else{
+                        t.deleteCharAt(2);          //KA
+                        String s=t.toString();
+                    }
+                    
+                }else if(sy.equals("CVCC") ){    //CVCC HING	-> CVC HIN | 
+                    t.deleteCharAt(3);
+                    //System.out.println(t);
+                }else if(sy.equals("CCVC")){ //CCVC SHIB -> CVC SIB
+                    t.deleteCharAt(1);
+                    //System.out.println(t);
+                }else if(sy.equals("CVVC")){ //CVVC NOOR -> CVC	NOR
+                    t.deleteCharAt(2);
+                    //System.out.println(t);
+                }else if(sy.equals("CCCV")){ //CCCV STRA -> CCV	TRA
+                    t.deleteCharAt(0);
+                    //System.out.println(t);
+                }else if(sy.equals("CCCVC")){ //CCCVC struk -> CVC RUK
+                    t.deleteCharAt(0);
+                    t.deleteCharAt(1);
+                    //System.out.println(t);
+                }
+                String s=t.toString();
+                if(isAvailable(s)){
+                    System.out.println(s);
+                    if(Syllabilizer.getWordPattern(s).equals("C")){
+                        concatList.add(getPath(ConstantObjects.SPACEFILE, 0));
+                    }
+                    else{
+                        concatList.add(getPath(s, 0));
+                    }
+                }
+                else{
+                    System.out.println("s = "+s);
+                    s=changeSyll(syl);
+                    System.out.println(s);
+                    if(isAvailable(s)){
+                        if(Syllabilizer.getWordPattern(s).equals("C")){  
+                            concatList.add(getPath(ConstantObjects.SPACEFILE, 0));
+                        }
+                        else{
+                            concatList.add(getPath(s, 0));
+                        }
+                        
+                    }
+                    else{
+                        concatList.add(getPath(ConstantObjects.SPACEFILE, 0));
+                    }
+                }
+                /*String s=syl;   //s syl already change
                 s=changeSyll(syl);
+                String sy;
+                sy=Syllabilizer.getWordPattern(syl);
                 System.out.println(s);
-                //if(!isAvailable(s)){
-                  //  new WAVOverlayer(overlayList, overlayListPath, syl);
+                if(isAvailable(s)){
                     concatList.add(getPath(s, 0));
-                //}
+                }
+                else{
+                    concatList.add(getPath(ConstantObjects.SPACEFILE, 0));
+                }*/
+                
+                
+                //comment code below is diphone cotcatenation, we not used it anymore
                 /*else{
                     // Iterate every phoneme.
                     for (String phoneme : phonemes) {
@@ -185,7 +291,20 @@ public class WordOnlyProcessor {
         return outputName;
     }
     
-
+    public ArrayList<Integer> findPositions(String string, char character) {
+        ArrayList<Integer> positions = new ArrayList<>();
+        for (int i = 0; i < string.length(); i++){
+            if (string.charAt(i) == character) {
+               positions.add(i);
+            }
+        }
+        return positions;
+    }
+    public String removeChar(String str, Integer n) {
+        String front = str.substring(0, n);
+        String back = str.substring(n+1, str.length());
+        return front + back;
+    }
     
 }
 //where the myMab came from
